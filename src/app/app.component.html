@@ -1,0 +1,71 @@
+<div *ngIf="!loaded" class="center">
+  <div class="loader-text">Loading...</div>
+  <div class="loader">Loading...</div>
+</div>
+
+<div *ngIf="loaded" class="header">
+  <img class="logo" src="assets/logo.png" />
+
+  <div class="btn-group mt-3 mr-3 right" role="group">
+    <div *ngFor="let char of d3Service.chosenCharacters">
+      <button type="button" class="btn btn-secondary">{{ char.name }}</button>
+    </div>
+
+    <connection-viewer
+      *ngIf="d3Service.chosenCharacters.length === 2"
+      [char1]="this.d3Service.chosenCharacters[0]"
+      [char2]="this.d3Service.chosenCharacters[1]"
+      [allEvents]="this.events"
+    ></connection-viewer>
+  </div>
+
+  <div class="input-group mt-3 col-4">
+    <input
+      [(ngModel)]="characterQuery"
+      class="form-control"
+      list="characters"
+      type="text"
+      placeholder="Choose a character by name"
+      (keyup)="searchCharacterSuggest($event.target.value)"
+    />
+    <datalist id="characters">
+      <div *ngFor="let char of filteredCharacterNames">
+        <option>{{ char }}</option>
+      </div>
+    </datalist>
+    <div class="input-group-append">
+      <button
+        type="button"
+        class="btn btn-outline-warning"
+        (click)="searchCharacterButton(characterQuery)"
+      >
+        Search
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-warning"
+        (click)="setChosenChars(characterQuery)"
+      >
+        Choose
+      </button>
+    </div>
+  </div>
+</div>
+
+<graph [nodes]="activeNodes" [links]="activeLinks"></graph>
+
+<div class="footer">
+  <div class="links">
+    <a target="_blank" href="https://github.com/NatanelMizrahi/kindred-marvel">
+      <img class="git-icon" src="assets/GitHub.png"> GitHub
+    </a>
+    &bull;
+    <about-modal></about-modal>
+    <span *ngIf="loaded">
+      &bull;
+      <a (click)="exportToJSON()" href="#">export to JSON</a>
+    </span>
+  </div>
+</div>
+
+<tooltip *ngFor="let node of nodes" [node]="node"></tooltip>

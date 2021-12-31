@@ -1,0 +1,13 @@
+.img-sm {
+  max-height: 200px;
+  min-width: auto;
+}
+
+.dark-bg {
+  background: rgba(52,58,64,0.6);
+}
+
+.scrollable {
+  max-height: 150px;
+  overflow: scroll;
+}
